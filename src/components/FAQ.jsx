@@ -16,9 +16,9 @@ const QUESTIONS = [
     answer: 'Tu cuenta permite registrar más de un bebé sin costo adicional.',
   },
   {
-    question: '¿Cómo funciona el período de prueba?',
+    question: '¿Voy a pagar todos los meses?',
     answer:
-      'Tenés acceso completo gratis por 14 días, sin necesidad de tarjeta. Podés cancelar en cualquier momento antes de que termine.',
+      'No. Pagás una sola vez $9.90 y tenés acceso de por vida a todas las funciones premium. Sin mensualidades, sin sorpresas en tu tarjeta.',
   },
 ]
 
