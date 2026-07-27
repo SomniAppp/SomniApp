@@ -3,8 +3,7 @@ import iconLight from '../assets/somni-icon-light.png'
 import wordmarkDark from '../assets/somni-wordmark-dark.png'
 import wordmarkLight from '../assets/somni-wordmark-light.png'
 
-// TODO: reemplazar por la URL real de checkout
-const CHECKOUT_URL = '#'
+const CHECKOUT_URL = 'https://pay.hotmart.com/A106776205M?off=1jk1sqvo'
 
 function Footer({ theme }) {
   return (
@@ -16,6 +15,8 @@ function Footer({ theme }) {
         <div className="mt-8">
           <a
             href={CHECKOUT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block rounded-button bg-brand-gradient px-8 py-4 font-body text-base font-medium text-white transition-[filter] hover:brightness-110"
           >
             Empezar gratis
