@@ -1,3 +1,6 @@
+// TODO: reemplazar por el link real del producto en Hotmart
+const HOTMART_CHECKOUT_URL = 'https://SEU-LINK-DO-HOTMART-AQUI'
+
 function Hero() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-12 md:py-32">
@@ -10,6 +13,16 @@ function Hero() {
           aprende el ritmo de tu bebé y te avisa el momento justo, antes de que se
           pase la ventana de sueño.
         </p>
+        <div className="mt-10">
+          <a
+            href={HOTMART_CHECKOUT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-button bg-brand-gradient px-8 py-4 font-body text-base font-medium text-white shadow-[0_8px_30px_-8px_rgba(155,107,242,0.6)] transition-[filter] hover:brightness-110"
+          >
+            Comprar acceso — $9.90
+          </a>
+        </div>
         <div className="mx-auto mt-20 max-w-xl">
           <div className="relative h-2 rounded-full bg-brand-gradient">
             <div className="absolute left-1/2 top-1/2 z-10 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-[#1a1a2e] bg-white shadow-[0_0_16px_4px_rgba(255,255,255,0.5)]" />

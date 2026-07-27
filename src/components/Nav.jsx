@@ -1,7 +1,11 @@
+import { useNavigate } from 'react-router-dom'
 import iconDark from '../assets/somni-icon-dark.png'
 import iconLight from '../assets/somni-icon-light.png'
 import wordmarkDark from '../assets/somni-wordmark-dark.png'
 import wordmarkLight from '../assets/somni-wordmark-light.png'
+
+// TODO: reemplazar por el link real del producto en Hotmart
+const HOTMART_CHECKOUT_URL = 'https://SEU-LINK-DO-HOTMART-AQUI'
 
 const NAV_LINKS = [
   { label: 'Cómo funciona', href: '#como-funciona' },
@@ -34,6 +38,8 @@ function MoonIcon() {
 }
 
 function Nav({ theme, toggleTheme }) {
+  const navigate = useNavigate()
+
   return (
     <header className="sticky top-0 z-50 border-b border-textPrimary/[0.08] bg-background/80 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -70,6 +76,20 @@ function Nav({ theme, toggleTheme }) {
           >
             {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
           </button>
+          <button
+            onClick={() => navigate('/auth?mode=login')}
+            className="font-body text-sm text-textSecondary transition-colors hover:text-textPrimary"
+          >
+            Iniciar sesión
+          </button>
+          <a
+            href={HOTMART_CHECKOUT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-button bg-brand-gradient px-5 py-2 font-body text-sm font-medium text-white transition-[filter] hover:brightness-110"
+          >
+            Comprar acceso
+          </a>
         </div>
       </nav>
     </header>
