@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useActivity } from '../context/ActivityContext'
 
 const CREATE_TITLES = {
   sueño: 'Registrar sueño',
@@ -36,10 +37,32 @@ function ToggleButton({ active, children, ...props }) {
   )
 }
 
-function SueñoForm({ existingEntry }) {
+function timeToTodayISO(time) {
+  if (!time) return null
+  const [hours, minutes] = time.split(':')
+  const date = new Date()
+  date.setHours(Number(hours), Number(minutes), 0, 0)
+  return date.toISOString()
+}
+
+function isoToTime(iso) {
+  if (!iso) return ''
+  const date = new Date(iso)
+  return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+}
+
+function SueñoForm({ existingEntry, onChange }) {
   const [mode, setMode] = useState(existingEntry ? 'manual' : 'now')
-  const [start, setStart] = useState(existingEntry?.start ?? '')
-  const [end, setEnd] = useState(existingEntry?.end ?? '')
+  const [start, setStart] = useState(isoToTime(existingEntry?.started_at))
+  const [end, setEnd] = useState(isoToTime(existingEntry?.ended_at))
+
+  useEffect(() => {
+    if (mode === 'now') {
+      onChange({ started_at: new Date().toISOString(), ended_at: null })
+    } else {
+      onChange({ started_at: timeToTodayISO(start), ended_at: timeToTodayISO(end) })
+    }
+  }, [mode, start, end])
 
   return (
     <div className="mt-6">
@@ -78,9 +101,13 @@ function SueñoForm({ existingEntry }) {
   )
 }
 
-function TomaForm({ existingEntry }) {
+function TomaForm({ existingEntry, onChange }) {
   const [tipo, setTipo] = useState(existingEntry?.tipo ?? 'pecho')
   const [value, setValue] = useState(existingEntry?.value ?? '')
+
+  useEffect(() => {
+    onChange({ tipo, value: value === '' ? null : Number(value) })
+  }, [tipo, value])
 
   return (
     <div className="mt-6">
@@ -110,8 +137,12 @@ function TomaForm({ existingEntry }) {
   )
 }
 
-function PañalForm({ existingEntry }) {
+function PañalForm({ existingEntry, onChange }) {
   const [tipo, setTipo] = useState(existingEntry?.tipo ?? 'mojado')
+
+  useEffect(() => {
+    onChange({ tipo })
+  }, [tipo])
 
   return (
     <div className="mt-6">
@@ -130,9 +161,12 @@ function PañalForm({ existingEntry }) {
   )
 }
 
-function QuickLogModal({ type, existingEntry, onClose, onDelete }) {
+function QuickLogModal({ type, existingEntry, onClose }) {
+  const { addLog, updateLog, deleteLog } = useActivity()
   const [visible, setVisible] = useState(false)
   const [confirmingDelete, setConfirmingDelete] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [formData, setFormData] = useState({})
   const isEditing = Boolean(existingEntry)
 
   useEffect(() => {
@@ -145,15 +179,28 @@ function QuickLogModal({ type, existingEntry, onClose, onDelete }) {
     setTimeout(onClose, 200)
   }
 
-  function handleSave() {
-    // TODO: persistir el registro (backend / estado global) cuando exista el motor de datos
-    handleClose()
+  async function handleSave() {
+    setSaving(true)
+    try {
+      if (isEditing) {
+        await updateLog(existingEntry.id, formData)
+      } else {
+        await addLog({ type, ...formData })
+      }
+      handleClose()
+    } finally {
+      setSaving(false)
+    }
   }
 
-  function handleDelete() {
-    // TODO: eliminar el registro de la persistencia (backend / estado global) cuando exista el motor de datos
-    onDelete?.(existingEntry)
-    handleClose()
+  async function handleDelete() {
+    setSaving(true)
+    try {
+      await deleteLog(existingEntry.id)
+      handleClose()
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -183,13 +230,14 @@ function QuickLogModal({ type, existingEntry, onClose, onDelete }) {
           </button>
         </div>
 
-        {type === 'sueño' && <SueñoForm existingEntry={existingEntry} />}
-        {type === 'toma' && <TomaForm existingEntry={existingEntry} />}
-        {type === 'pañal' && <PañalForm existingEntry={existingEntry} />}
+        {type === 'sueño' && <SueñoForm existingEntry={existingEntry} onChange={setFormData} />}
+        {type === 'toma' && <TomaForm existingEntry={existingEntry} onChange={setFormData} />}
+        {type === 'pañal' && <PañalForm existingEntry={existingEntry} onChange={setFormData} />}
 
         <button
           onClick={handleSave}
-          className="mt-8 w-full rounded-button bg-brand-gradient px-6 py-3 font-body text-base font-medium text-white transition-[filter] hover:brightness-110"
+          disabled={saving}
+          className="mt-8 w-full rounded-button bg-brand-gradient px-6 py-3 font-body text-base font-medium text-white transition-[filter] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isEditing ? 'Guardar cambios' : 'Guardar'}
         </button>
@@ -208,7 +256,8 @@ function QuickLogModal({ type, existingEntry, onClose, onDelete }) {
                   </button>
                   <button
                     onClick={handleDelete}
-                    className="font-body text-sm font-medium text-red-400"
+                    disabled={saving}
+                    className="font-body text-sm font-medium text-red-400 disabled:opacity-60"
                   >
                     Sí, eliminar
                   </button>

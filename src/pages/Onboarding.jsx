@@ -14,12 +14,14 @@ import StepConfirmation from '../components/onboarding/StepConfirmation'
 function Onboarding() {
   const navigate = useNavigate()
   const { theme } = useTheme()
-  const { setBabies, setActiveBabyId } = useBabies()
+  const { addBaby, setActiveBabyId } = useBabies()
   const [step, setStep] = useState(1)
   const [isTwins, setIsTwins] = useState(false)
   const [names, setNames] = useState(['', ''])
   const [birthdate, setBirthdate] = useState('')
   const [visible, setVisible] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     setVisible(true)
@@ -38,17 +40,22 @@ function Onboarding() {
     })
   }
 
-  function handleFinish() {
+  async function handleFinish() {
     const activeNames = isTwins ? names : [names[0]]
-    const newBabies = activeNames.map((name, index) => ({
-      id: Date.now() + index,
-      name,
-      birthdate,
-    }))
-
-    setBabies(newBabies)
-    setActiveBabyId(newBabies[0].id)
-    navigate('/app')
+    setSaving(true)
+    setError('')
+    try {
+      const createdBabies = []
+      for (const name of activeNames) {
+        createdBabies.push(await addBaby({ name, birthdate }))
+      }
+      setActiveBabyId(createdBabies[0].id)
+      navigate('/app')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -97,6 +104,8 @@ function Onboarding() {
               names={isTwins ? names : [names[0]]}
               birthdate={birthdate}
               onFinish={handleFinish}
+              saving={saving}
+              error={error}
             />
           )}
         </div>

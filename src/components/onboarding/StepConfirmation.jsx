@@ -12,7 +12,7 @@ function getAgeLabel(birthdate) {
   return `${months} mes${months === 1 ? '' : 'es'}`
 }
 
-function StepConfirmation({ isTwins, names, birthdate, onFinish }) {
+function StepConfirmation({ isTwins, names, birthdate, onFinish, saving, error }) {
   const ageLabel = getAgeLabel(birthdate)
 
   return (
@@ -44,11 +44,14 @@ function StepConfirmation({ isTwins, names, birthdate, onFinish }) {
         </div>
       )}
 
+      {error && <p className="mt-4 font-body text-sm text-red-500">{error}</p>}
+
       <button
         onClick={onFinish}
-        className="mt-8 w-full rounded-button bg-brand-gradient px-6 py-3 font-body text-base font-medium text-white transition-[filter] hover:brightness-110"
+        disabled={saving}
+        className="mt-8 w-full rounded-button bg-brand-gradient px-6 py-3 font-body text-base font-medium text-white transition-[filter] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Empezar a registrar
+        {saving ? 'Guardando...' : 'Empezar a registrar'}
       </button>
     </div>
   )

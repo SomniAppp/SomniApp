@@ -30,6 +30,38 @@ export const ACTIVITY_ICONS = {
   Pañal: DiaperIcon,
 }
 
+export const TYPE_LABELS = {
+  sueño: 'Sueño',
+  toma: 'Toma',
+  pañal: 'Pañal',
+}
+
+function formatTime(iso) {
+  const date = new Date(iso)
+  return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+}
+
+export function formatLogTime(log) {
+  if (log.type === 'sueño' && log.ended_at) {
+    return `${formatTime(log.started_at)} a ${formatTime(log.ended_at)}`
+  }
+  return formatTime(log.started_at)
+}
+
+export function logToActivityItem(log) {
+  return {
+    id: log.id,
+    type: TYPE_LABELS[log.type],
+    time: formatLogTime(log),
+    start: log.started_at ? formatTime(log.started_at) : '',
+    end: log.ended_at ? formatTime(log.ended_at) : '',
+    tipo: log.tipo,
+    value: log.value,
+    started_at: log.started_at,
+    ended_at: log.ended_at,
+  }
+}
+
 export function ActivityItem({ type, time, onClick, ...entry }) {
   const Icon = ACTIVITY_ICONS[type]
   return (

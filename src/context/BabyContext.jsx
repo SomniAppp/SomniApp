@@ -1,14 +1,58 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
+import { useAuth } from './AuthContext'
 
 const BabyContext = createContext(null)
 
-// TODO: persistir los bebés y el bebé activo en backend / almacenamiento real; hoy vive solo en memoria y se pierde al recargar
 export function BabyProvider({ children }) {
+  const { user } = useAuth()
   const [babies, setBabies] = useState([])
   const [activeBabyId, setActiveBabyId] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!user) {
+      setBabies([])
+      setActiveBabyId(null)
+      setLoading(false)
+      return
+    }
+
+    let cancelled = false
+    setLoading(true)
+
+    supabase
+      .from('babies')
+      .select('*')
+      .order('created_at', { ascending: true })
+      .then(({ data, error }) => {
+        if (cancelled) return
+        if (error) throw error
+        setBabies(data ?? [])
+        setActiveBabyId(data?.[0]?.id ?? null)
+        setLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [user])
+
+  async function addBaby({ name, birthdate }) {
+    const { data, error } = await supabase
+      .from('babies')
+      .insert({ name, birthdate, user_id: user.id })
+      .select()
+      .single()
+    if (error) throw error
+
+    setBabies((prev) => [...prev, data])
+    setActiveBabyId((prev) => prev ?? data.id)
+    return data
+  }
 
   return (
-    <BabyContext.Provider value={{ babies, setBabies, activeBabyId, setActiveBabyId }}>
+    <BabyContext.Provider value={{ babies, setBabies, activeBabyId, setActiveBabyId, addBaby, loading }}>
       {children}
     </BabyContext.Provider>
   )

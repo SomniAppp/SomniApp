@@ -1,12 +1,43 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
+import { useAuth } from './AuthContext'
 
 const SubscriptionContext = createContext(null)
 
-// TODO: reemplazar por el estado real de suscripción (backend / pasarela de pago); hoy vive solo en memoria y se pierde al recargar
 export function SubscriptionProvider({ children }) {
+  const { user } = useAuth()
   const [isPremium, setIsPremium] = useState(false)
 
-  function togglePremium(value) {
+  useEffect(() => {
+    if (!user) {
+      setIsPremium(false)
+      return
+    }
+
+    let cancelled = false
+
+    supabase
+      .from('profiles')
+      .select('is_premium')
+      .eq('id', user.id)
+      .single()
+      .then(({ data, error }) => {
+        if (cancelled) return
+        if (error) throw error
+        setIsPremium(data?.is_premium ?? false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [user])
+
+  async function togglePremium(value) {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ is_premium: value })
+      .eq('id', user.id)
+    if (error) throw error
     setIsPremium(value)
   }
 

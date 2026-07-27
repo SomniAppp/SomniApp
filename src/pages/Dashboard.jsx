@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import QuickLogModal from '../components/QuickLogModal'
 import PaywallModal from '../components/PaywallModal'
-import { MoonIcon, BottleIcon, DiaperIcon, ActivityItem } from '../components/activityIcons'
+import { MoonIcon, BottleIcon, DiaperIcon, ActivityItem, logToActivityItem } from '../components/activityIcons'
 import { useTheme } from '../hooks/useTheme'
 import { useBabies } from '../context/BabyContext'
 import { useSubscription } from '../context/SubscriptionContext'
+import { useActivity } from '../context/ActivityContext'
 
 // TODO: reemplazar por la predicción real del motor de ventanas de sueño, por bebé
 const NEXT_WINDOW = {
@@ -16,22 +17,22 @@ const NEXT_WINDOW = {
   status: 'Momento ideal en 45 min',
 }
 
-// TODO: reemplazar por la actividad real registrada, por bebé
-const RECENT_ACTIVITY = [
-  { id: 1, type: 'Sueño', time: '12:00 a 13:30' },
-  { id: 2, type: 'Toma', time: '10:15' },
-  { id: 3, type: 'Pañal', time: '09:40' },
-]
+function isSameDay(isoA, isoB) {
+  const a = new Date(isoA)
+  const b = new Date(isoB)
+  return a.toDateString() === b.toDateString()
+}
 
-// TODO: reemplazar por la detección real de si el usuario ya tiene registros (backend / estado global)
-const hasEntries = true
+function sleepHoursBetween(startIso, endIso) {
+  if (!endIso) return 0
+  return (new Date(endIso) - new Date(startIso)) / (1000 * 60 * 60)
+}
 
-// TODO: reemplazar por las estadísticas reales del día, por bebé
-const TODAY_STATS = {
-  napsCount: 3,
-  totalSleep: '10h 45m',
-  // TODO: definir la lógica real de cálculo de "calidad" del sueño (hoy es un valor mockado)
-  quality: '92%',
+function formatHoursMinutes(hours) {
+  const totalMinutes = Math.round(hours * 60)
+  const h = Math.floor(totalMinutes / 60)
+  const m = totalMinutes % 60
+  return `${h}h ${m}m`
 }
 
 const QUICK_LOG_BUTTONS = [
@@ -79,10 +80,28 @@ function Dashboard() {
   const { theme, toggleTheme } = useTheme()
   const { babies, activeBabyId, setActiveBabyId } = useBabies()
   const { isPremium } = useSubscription()
+  const { logs } = useActivity()
 
   const activeBaby = babies.find((baby) => baby.id === activeBabyId)
-  // TODO: reemplazar por un fallback real (ej. redirigir a onboarding) si no hay bebés cargados
-  const babyName = activeBaby?.name ?? 'Sofía'
+  const babyName = activeBaby?.name ?? 'tu bebé'
+
+  const hasEntries = logs.length > 0
+  const recentActivity = useMemo(() => logs.slice(0, 5).map(logToActivityItem), [logs])
+
+  const todayStats = useMemo(() => {
+    const today = new Date().toISOString()
+    const todayLogs = logs.filter((log) => isSameDay(log.started_at, today))
+    const sleepLogs = todayLogs.filter((log) => log.type === 'sueño' && log.ended_at)
+    const totalSleepHours = sleepLogs.reduce(
+      (sum, log) => sum + sleepHoursBetween(log.started_at, log.ended_at),
+      0,
+    )
+
+    return {
+      napsCount: sleepLogs.length,
+      totalSleep: formatHoursMinutes(totalSleepHours),
+    }
+  }, [logs])
 
   function openEditModal(entry) {
     setActiveModal({ type: typeToModalType(entry.type), existingEntry: entry })
@@ -171,18 +190,14 @@ function Dashboard() {
         <p className="font-body text-xs font-medium uppercase tracking-wider text-textSecondary">
           Estado de hoy
         </p>
-        <div className="mt-2 grid grid-cols-3 divide-x divide-textPrimary/[0.08] rounded-card border border-textPrimary/[0.08] bg-surface p-6">
+        <div className="mt-2 grid grid-cols-2 divide-x divide-textPrimary/[0.08] rounded-card border border-textPrimary/[0.08] bg-surface p-6">
           <div className="flex flex-col items-center text-center">
-            <p className="font-display text-2xl font-bold text-textPrimary">{TODAY_STATS.napsCount}</p>
+            <p className="font-display text-2xl font-bold text-textPrimary">{todayStats.napsCount}</p>
             <p className="mt-1 font-body text-xs text-textSecondary">Siestas realizadas</p>
           </div>
           <div className="flex flex-col items-center text-center">
-            <p className="font-display text-2xl font-bold text-textPrimary">{TODAY_STATS.totalSleep}</p>
+            <p className="font-display text-2xl font-bold text-textPrimary">{todayStats.totalSleep}</p>
             <p className="mt-1 font-body text-xs text-textSecondary">Sueño total</p>
-          </div>
-          <div className="flex flex-col items-center text-center">
-            <p className="font-display text-2xl font-bold text-textPrimary">{TODAY_STATS.quality}</p>
-            <p className="mt-1 font-body text-xs text-textSecondary">Calidad</p>
           </div>
         </div>
       </div>
@@ -206,7 +221,7 @@ function Dashboard() {
         <h2 className="font-display text-lg font-bold">Actividad reciente</h2>
         {hasEntries ? (
           <div className="mt-4 flex flex-col gap-3">
-            {RECENT_ACTIVITY.map((item) => (
+            {recentActivity.map((item) => (
               <ActivityItem key={item.id} {...item} onClick={openEditModal} />
             ))}
           </div>
