@@ -31,10 +31,6 @@ function Pricing() {
               </li>
             ))}
           </ul>
-
-          <button className="mt-8 w-full rounded-button bg-brand-gradient px-6 py-3 font-body text-base font-medium text-white transition-[filter] hover:brightness-110">
-            Empezar gratis
-          </button>
         </div>
       </div>
     </section>

@@ -3,6 +3,9 @@ import iconLight from '../assets/somni-icon-light.png'
 import wordmarkDark from '../assets/somni-wordmark-dark.png'
 import wordmarkLight from '../assets/somni-wordmark-light.png'
 
+// TODO: reemplazar por la URL real de checkout
+const CHECKOUT_URL = '#'
+
 function Footer({ theme }) {
   return (
     <footer className="border-t border-textPrimary/[0.08]">
@@ -11,9 +14,12 @@ function Footer({ theme }) {
           Dejá de adivinar. Empezá a saber.
         </h2>
         <div className="mt-8">
-          <button className="rounded-button bg-brand-gradient px-8 py-4 font-body text-base font-medium text-white transition-[filter] hover:brightness-110">
+          <a
+            href={CHECKOUT_URL}
+            className="inline-block rounded-button bg-brand-gradient px-8 py-4 font-body text-base font-medium text-white transition-[filter] hover:brightness-110"
+          >
             Empezar gratis
-          </button>
+          </a>
         </div>
       </div>
 

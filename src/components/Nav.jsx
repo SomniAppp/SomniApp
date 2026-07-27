@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import iconDark from '../assets/somni-icon-dark.png'
 import iconLight from '../assets/somni-icon-light.png'
 import wordmarkDark from '../assets/somni-wordmark-dark.png'
@@ -35,8 +34,6 @@ function MoonIcon() {
 }
 
 function Nav({ theme, toggleTheme }) {
-  const navigate = useNavigate()
-
   return (
     <header className="sticky top-0 z-50 border-b border-textPrimary/[0.08] bg-background/80 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -72,18 +69,6 @@ function Nav({ theme, toggleTheme }) {
             className="flex h-9 w-9 items-center justify-center rounded-button border border-textPrimary/[0.08] text-textPrimary transition-colors hover:bg-surface"
           >
             {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-          </button>
-          <button
-            onClick={() => navigate('/auth?mode=login')}
-            className="font-body text-sm text-textSecondary transition-colors hover:text-textPrimary"
-          >
-            Iniciar sesión
-          </button>
-          <button
-            onClick={() => navigate('/auth')}
-            className="rounded-button bg-brand-gradient px-5 py-2 font-body text-sm font-medium text-white transition-[filter] hover:brightness-110"
-          >
-            Empezar gratis
           </button>
         </div>
       </nav>

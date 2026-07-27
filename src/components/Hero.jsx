@@ -1,8 +1,4 @@
-import { useNavigate } from 'react-router-dom'
-
 function Hero() {
-  const navigate = useNavigate()
-
   return (
     <section className="mx-auto max-w-6xl px-6 py-12 md:py-32">
       <div className="mx-auto max-w-3xl text-center">
@@ -14,15 +10,6 @@ function Hero() {
           aprende el ritmo de tu bebé y te avisa el momento justo, antes de que se
           pase la ventana de sueño.
         </p>
-        <div className="mt-10">
-          <button
-            onClick={() => navigate('/auth')}
-            className="rounded-button bg-brand-gradient px-8 py-4 font-body text-base font-medium text-white shadow-[0_8px_30px_-8px_rgba(155,107,242,0.6)] transition-[filter] hover:brightness-110"
-          >
-            Empezar gratis
-          </button>
-        </div>
-
         <div className="mx-auto mt-20 max-w-xl">
           <div className="relative h-2 rounded-full bg-brand-gradient">
             <div className="absolute left-1/2 top-1/2 z-10 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-[#1a1a2e] bg-white shadow-[0_0_16px_4px_rgba(255,255,255,0.5)]" />
