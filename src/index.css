@@ -1,0 +1,50 @@
+@import 'tailwindcss';
+
+@import '@fontsource/sora/600.css';
+@import '@fontsource/sora/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-background-rgb: 250 250 250;
+  --color-surface-rgb: 255 255 255;
+  --color-text-primary-rgb: 20 20 43;
+  --color-text-secondary-rgb: 107 107 128;
+  --color-border: 0 0 0;
+  --color-border-opacity: 0.08;
+}
+
+.dark {
+  --color-background-rgb: 0 0 0;
+  --color-surface-rgb: 18 18 24;
+  --color-text-primary-rgb: 255 255 255;
+  --color-text-secondary-rgb: 138 138 154;
+  --color-border: 255 255 255;
+  --color-border-opacity: 0.08;
+}
+
+@theme {
+  --color-background: rgb(var(--color-background-rgb));
+  --color-surface: rgb(var(--color-surface-rgb));
+  --color-textPrimary: rgb(var(--color-text-primary-rgb));
+  --color-textSecondary: rgb(var(--color-text-secondary-rgb));
+
+  --background-image-brand-gradient: linear-gradient(
+    90deg,
+    #4a7fff 0%,
+    #9b6bf2 50%,
+    #f5a94e 100%
+  );
+
+  --font-display: 'Sora', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --radius-card: 16px;
+  --radius-button: 12px;
+}
+
+body {
+  @apply bg-background text-textPrimary transition-colors duration-300;
+}
