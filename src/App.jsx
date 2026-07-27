@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext'
 import { BabyProvider } from './context/BabyContext'
 import { SubscriptionProvider } from './context/SubscriptionContext'
 import { ActivityProvider } from './context/ActivityContext'
+import { useMetaPixelPageView } from './hooks/useMetaPixelPageView'
 import ProtectedRoute from './components/ProtectedRoute'
 import Landing from './pages/Landing'
 import Auth from './pages/Auth'
@@ -14,6 +15,8 @@ import Historial from './pages/Historial'
 import Perfil from './pages/Perfil'
 
 function App() {
+  useMetaPixelPageView()
+
   return (
     <AuthProvider>
       <BabyProvider>

@@ -16,16 +16,24 @@ export function SubscriptionProvider({ children }) {
 
     let cancelled = false
 
-    supabase
-      .from('profiles')
-      .select('is_premium')
-      .eq('id', user.id)
-      .single()
-      .then(({ data, error }) => {
-        if (cancelled) return
-        if (error) throw error
-        setIsPremium(data?.is_premium ?? false)
-      })
+    async function loadProfile() {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('is_premium')
+        .eq('id', user.id)
+        .single()
+
+      if (cancelled) return
+
+      if (error) {
+        console.error('Error al cargar el perfil:', error)
+        return
+      }
+
+      setIsPremium(data?.is_premium ?? false)
+    }
+
+    loadProfile()
 
     return () => {
       cancelled = true

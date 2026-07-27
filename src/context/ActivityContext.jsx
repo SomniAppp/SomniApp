@@ -21,17 +21,26 @@ export function ActivityProvider({ children }) {
     let cancelled = false
     setLoading(true)
 
-    supabase
-      .from('activity_logs')
-      .select('*')
-      .eq('baby_id', activeBabyId)
-      .order('started_at', { ascending: false })
-      .then(({ data, error }) => {
-        if (cancelled) return
-        if (error) throw error
-        setLogs(data ?? [])
+    async function loadLogs() {
+      const { data, error } = await supabase
+        .from('activity_logs')
+        .select('*')
+        .eq('baby_id', activeBabyId)
+        .order('started_at', { ascending: false })
+
+      if (cancelled) return
+
+      if (error) {
+        console.error('Error al cargar los registros de actividad:', error)
         setLoading(false)
-      })
+        return
+      }
+
+      setLogs(data ?? [])
+      setLoading(false)
+    }
+
+    loadLogs()
 
     return () => {
       cancelled = true

@@ -21,17 +21,26 @@ export function BabyProvider({ children }) {
     let cancelled = false
     setLoading(true)
 
-    supabase
-      .from('babies')
-      .select('*')
-      .order('created_at', { ascending: true })
-      .then(({ data, error }) => {
-        if (cancelled) return
-        if (error) throw error
-        setBabies(data ?? [])
-        setActiveBabyId(data?.[0]?.id ?? null)
+    async function loadBabies() {
+      const { data, error } = await supabase
+        .from('babies')
+        .select('*')
+        .order('created_at', { ascending: true })
+
+      if (cancelled) return
+
+      if (error) {
+        console.error('Error al cargar los bebés:', error)
         setLoading(false)
-      })
+        return
+      }
+
+      setBabies(data ?? [])
+      setActiveBabyId(data?.[0]?.id ?? null)
+      setLoading(false)
+    }
+
+    loadBabies()
 
     return () => {
       cancelled = true
