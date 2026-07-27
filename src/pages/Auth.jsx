@@ -7,33 +7,10 @@ import iconLight from '../assets/somni-icon-light.png'
 import wordmarkDark from '../assets/somni-wordmark-dark.png'
 import wordmarkLight from '../assets/somni-wordmark-light.png'
 
-function GoogleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5">
-      <path
-        fill="#4285F4"
-        d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.63h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.81Z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 24c3.24 0 5.96-1.07 7.95-2.92l-3.88-3c-1.08.72-2.46 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.26v3.11A11.99 11.99 0 0 0 12 24Z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.27 14.27a7.2 7.2 0 0 1 0-4.54V6.62H1.26a12 12 0 0 0 0 10.76l4.01-3.11Z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 4.75c1.76 0 3.35.6 4.6 1.79l3.44-3.44C17.95 1.19 15.24 0 12 0A11.99 11.99 0 0 0 1.26 6.62l4.01 3.11C6.22 6.86 8.87 4.75 12 4.75Z"
-      />
-    </svg>
-  )
-}
-
 function Auth() {
   const navigate = useNavigate()
   const { theme } = useTheme()
-  const { signUp, signIn, signInWithGoogle } = useAuth()
+  const { signUp, signIn } = useAuth()
   const [searchParams] = useSearchParams()
   const [mode, setMode] = useState(searchParams.get('mode') === 'login' ? 'login' : 'signup')
   const [email, setEmail] = useState('')
@@ -65,15 +42,6 @@ function Auth() {
       setError(err.message)
     } finally {
       setSubmitting(false)
-    }
-  }
-
-  async function handleGoogleSignIn() {
-    setError('')
-    try {
-      await signInWithGoogle()
-    } catch (err) {
-      setError(err.message)
     }
   }
 
@@ -141,20 +109,6 @@ function Auth() {
           className="mt-4 w-full font-body text-sm text-textSecondary hover:text-textPrimary"
         >
           {isSignup ? '¿Ya tenés cuenta? Iniciá sesión' : '¿No tenés cuenta? Creá una'}
-        </button>
-
-        <div className="mt-8 flex items-center gap-4">
-          <div className="h-px flex-1 bg-textPrimary/[0.08]" />
-          <span className="font-body text-xs text-textSecondary">O</span>
-          <div className="h-px flex-1 bg-textPrimary/[0.08]" />
-        </div>
-
-        <button
-          onClick={handleGoogleSignIn}
-          className="mt-6 flex w-full items-center justify-center gap-3 rounded-button border border-textPrimary/[0.08] bg-surface px-6 py-3 font-body text-base font-medium text-textPrimary transition-colors hover:bg-textPrimary/[0.04]"
-        >
-          <GoogleIcon />
-          Continuar con Google
         </button>
       </div>
     </div>
