@@ -14,11 +14,10 @@ function Pricing() {
       <div className="mx-auto mt-12 max-w-md rounded-card bg-brand-gradient p-[1.5px]">
         <div className="rounded-card bg-surface p-8 text-center">
           <p className="font-body text-sm font-medium text-textSecondary">Plan Somni</p>
-          <p className="mt-2 font-display text-4xl font-bold">
-            $4.99<span className="font-body text-base font-normal text-textSecondary">/mes</span>
-          </p>
+          <p className="mt-2 font-display text-4xl font-bold">$9.90</p>
+          <p className="mt-1 font-body text-sm text-textSecondary">Pago único · Acceso de por vida</p>
           <p className="mt-2 font-body text-sm text-textSecondary">
-            La mitad del precio de otras apps líderes
+            Sin mensualidades. Pagás una vez, usás para siempre
           </p>
 
           <ul className="mt-8 space-y-3 text-left">

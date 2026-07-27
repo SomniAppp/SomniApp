@@ -38,8 +38,8 @@ function PaywallModal({ onClose }) {
     setTimeout(onClose, 200)
   }
 
-  function handleStartTrial() {
-    // TODO: reemplazar por la integración real de pago (Stripe, etc.) cuando exista
+  function handleGetLifetimeAccess() {
+    // TODO: reemplazar por la integración real de pago único (Stripe, etc.) cuando exista
     togglePremium(true)
     handleClose()
   }
@@ -75,15 +75,14 @@ function PaywallModal({ onClose }) {
           ))}
         </ul>
 
-        <p className="mt-6 font-display text-3xl font-bold text-textPrimary">
-          $4.99<span className="font-body text-base font-normal text-textSecondary">/mes</span>
-        </p>
+        <p className="mt-6 font-display text-3xl font-bold text-textPrimary">$9.90</p>
+        <p className="mt-1 font-body text-sm text-textSecondary">Pago único, acceso de por vida</p>
 
         <button
-          onClick={handleStartTrial}
+          onClick={handleGetLifetimeAccess}
           className="mt-6 w-full rounded-button bg-brand-gradient px-6 py-3 font-body text-base font-medium text-white transition-[filter] hover:brightness-110"
         >
-          Comenzar prueba gratis
+          Obtener acceso de por vida
         </button>
 
         <button
