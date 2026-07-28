@@ -1,4 +1,4 @@
-const CHECKOUT_URL = 'https://pay.hotmart.com/A106776205M?off=1jk1sqvo'
+import { HOTMART_CHECKOUT_URL } from '../lib/checkout'
 
 const FEATURES = [
   'Predicción de la próxima ventana de sueño',
@@ -34,12 +34,12 @@ function Pricing() {
           </ul>
 
           <a
-            href={CHECKOUT_URL}
+            href={HOTMART_CHECKOUT_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-8 inline-block w-full rounded-button bg-brand-gradient px-6 py-3 font-body text-base font-medium text-white transition-[filter] hover:brightness-110"
           >
-            Empezar gratis
+            Comprar acceso — $9.90
           </a>
         </div>
       </div>

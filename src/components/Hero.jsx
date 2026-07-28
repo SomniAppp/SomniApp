@@ -1,5 +1,6 @@
-// TODO: reemplazar por el link real del producto en Hotmart
-const HOTMART_CHECKOUT_URL = 'https://SEU-LINK-DO-HOTMART-AQUI'
+function scrollToPricing() {
+  document.querySelector('#precios')?.scrollIntoView({ behavior: 'smooth' })
+}
 
 function Hero() {
   return (
@@ -14,14 +15,12 @@ function Hero() {
           pase la ventana de sueño.
         </p>
         <div className="mt-10">
-          <a
-            href={HOTMART_CHECKOUT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block rounded-button bg-brand-gradient px-8 py-4 font-body text-base font-medium text-white shadow-[0_8px_30px_-8px_rgba(155,107,242,0.6)] transition-[filter] hover:brightness-110"
+          <button
+            onClick={scrollToPricing}
+            className="rounded-button bg-brand-gradient px-8 py-4 font-body text-base font-medium text-white shadow-[0_8px_30px_-8px_rgba(155,107,242,0.6)] transition-[filter] hover:brightness-110"
           >
             Comprar acceso — $9.90
-          </a>
+          </button>
         </div>
         <div className="mx-auto mt-20 max-w-xl">
           <div className="relative h-2 rounded-full bg-brand-gradient">
