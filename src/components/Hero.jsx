@@ -7,12 +7,12 @@ function Hero() {
     <section className="mx-auto max-w-6xl px-6 py-12 md:py-32">
       <div className="mx-auto max-w-3xl text-center">
         <h1 className="font-display text-3xl font-bold leading-tight md:text-5xl">
-          Sabé exactamente cuándo tu bebé necesita dormir
+          Sabé exactamente cuándo tu bebé necesita dormir — antes de que se pase la ventana
         </h1>
         <p className="mx-auto mt-6 max-w-xl font-body text-lg text-textSecondary">
           Nada de adivinar la hora ni de noches de llanto por dormir tarde. Somni
-          aprende el ritmo de tu bebé y te avisa el momento justo, antes de que se
-          pase la ventana de sueño.
+          aprende el ritmo de tu bebé y te avisa el momento justo — sin mensualidad,
+          pagás una vez y usás para siempre.
         </p>
         <div className="mt-10">
           <button
