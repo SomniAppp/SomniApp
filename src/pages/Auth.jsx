@@ -49,10 +49,18 @@ function Auth() {
     <div className="flex min-h-screen items-center justify-center bg-background px-6 text-textPrimary">
       <div className="w-full max-w-md">
         <div className="mb-8 flex justify-center md:mb-12">
-          <img src={theme === 'dark' ? iconDark : iconLight} alt="Somni" className="h-8 w-auto" />
+          <img
+            src={theme === 'dark' ? iconDark : iconLight}
+            alt="Somni"
+            width={theme === 'dark' ? 51 : 31}
+            height={32}
+            className="h-8 w-auto"
+          />
           <img
             src={theme === 'dark' ? wordmarkDark : wordmarkLight}
             alt="Somni"
+            width={theme === 'dark' ? 114 : 127}
+            height={24}
             className="ml-2 h-6 w-auto"
           />
         </div>

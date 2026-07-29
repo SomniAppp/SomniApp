@@ -17,11 +17,17 @@ function Footer({ theme }) {
           <img
             src={theme === 'dark' ? iconDark : iconLight}
             alt="Somni"
+            width={theme === 'dark' ? 63 : 39}
+            height={40}
+            loading="lazy"
             className="h-10 w-auto"
           />
           <img
             src={theme === 'dark' ? wordmarkDark : wordmarkLight}
             alt="Somni"
+            width={theme === 'dark' ? 153 : 170}
+            height={32}
+            loading="lazy"
             className="h-8 w-auto"
           />
         </div>

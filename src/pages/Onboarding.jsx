@@ -65,11 +65,15 @@ function Onboarding() {
           <img
             src={theme === 'dark' ? iconDark : iconLight}
             alt="Somni"
+            width={theme === 'dark' ? 51 : 31}
+            height={32}
             className="h-8 w-auto"
           />
           <img
             src={theme === 'dark' ? wordmarkDark : wordmarkLight}
             alt="Somni"
+            width={theme === 'dark' ? 114 : 127}
+            height={24}
             className="ml-2 h-6 w-auto"
           />
         </div>
