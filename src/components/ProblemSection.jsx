@@ -1,5 +1,5 @@
 import PhoneFrame from './PhoneFrame'
-import proximaSiestaScreenshot from '../assets/proxima-siesta-card.jpg'
+import proximaSiestaScreenshot from '../assets/IMG_5604.jpg'
 
 function ProblemSection() {
   return (
@@ -16,13 +16,11 @@ function ProblemSection() {
           </p>
         </div>
         <PhoneFrame>
-          <div className="flex h-full w-full items-center justify-center p-4">
-            <img
-              src={proximaSiestaScreenshot}
-              alt="Próxima siesta en el Dashboard de Somni"
-              className="w-full rounded-2xl object-contain shadow-[0_0_40px_-8px_rgba(155,107,242,0.55)]"
-            />
-          </div>
+          <img
+            src={proximaSiestaScreenshot}
+            alt="Dashboard de Somni con la próxima siesta"
+            className="h-full w-full object-contain"
+          />
         </PhoneFrame>
       </div>
     </section>
