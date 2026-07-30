@@ -48,3 +48,19 @@
 body {
   @apply bg-background text-textPrimary transition-colors duration-300;
 }
+
+@keyframes sleep-window-glide {
+  0%, 8% {
+    left: 6%;
+  }
+  42%, 68% {
+    left: 50%;
+  }
+  92%, 100% {
+    left: 94%;
+  }
+}
+
+.animate-sleep-window {
+  animation: sleep-window-glide 7s ease-in-out infinite;
+}

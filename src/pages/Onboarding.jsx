@@ -14,10 +14,11 @@ import StepConfirmation from '../components/onboarding/StepConfirmation'
 function Onboarding() {
   const navigate = useNavigate()
   const { theme } = useTheme()
-  const { addBaby, setActiveBabyId } = useBabies()
+  const { addBaby, setActiveBabyId, setParentName } = useBabies()
   const [step, setStep] = useState(1)
   const [isTwins, setIsTwins] = useState(false)
   const [names, setNames] = useState(['', ''])
+  const [parentNameInput, setParentNameInput] = useState('')
   const [birthdate, setBirthdate] = useState('')
   const [visible, setVisible] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -50,6 +51,7 @@ function Onboarding() {
         createdBabies.push(await addBaby({ name, birthdate }))
       }
       setActiveBabyId(createdBabies[0].id)
+      setParentName(parentNameInput)
       navigate('/app')
     } catch (err) {
       setError(err.message)
@@ -89,6 +91,8 @@ function Onboarding() {
               onToggleTwins={setIsTwins}
               names={names}
               onChangeName={handleChangeName}
+              parentName={parentNameInput}
+              onChangeParentName={setParentNameInput}
               onNext={() => goToStep(2)}
             />
           )}
@@ -106,6 +110,7 @@ function Onboarding() {
             <StepConfirmation
               isTwins={isTwins}
               names={isTwins ? names : [names[0]]}
+              parentName={parentNameInput}
               birthdate={birthdate}
               onFinish={handleFinish}
               saving={saving}

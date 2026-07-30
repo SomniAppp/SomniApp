@@ -2,7 +2,6 @@ import iconDark from '../assets/somni-icon-dark.png'
 import iconLight from '../assets/somni-icon-light.png'
 import wordmarkDark from '../assets/somni-wordmark-dark.png'
 import wordmarkLight from '../assets/somni-wordmark-light.png'
-import { HOTMART_CHECKOUT_URL } from '../lib/checkout'
 
 const NAV_LINKS = [
   { label: 'Cómo funciona', href: '#como-funciona' },
@@ -37,7 +36,7 @@ function MoonIcon() {
 function Nav({ theme, toggleTheme }) {
   return (
     <header className="sticky top-0 z-50 border-b border-textPrimary/[0.08] bg-background/80 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6">
         <div className="flex items-center gap-2">
           <img
             src={theme === 'dark' ? iconDark : iconLight}
@@ -67,22 +66,21 @@ function Nav({ theme, toggleTheme }) {
           ))}
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <button
             onClick={toggleTheme}
             aria-label="Cambiar tema"
-            className="flex h-9 w-9 items-center justify-center rounded-button border border-textPrimary/[0.08] text-textPrimary transition-colors hover:bg-surface"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-button border border-textPrimary/[0.08] text-textPrimary transition-colors hover:bg-surface"
           >
             {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
           </button>
-          <a
-            href={HOTMART_CHECKOUT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-button bg-brand-gradient px-5 py-2 font-body text-sm font-medium text-white transition-[filter] hover:brightness-110"
+          <button
+            type="button"
+            onClick={() => scrollToId('#precios')}
+            className="whitespace-nowrap rounded-button bg-brand-gradient px-3 py-2 font-body text-sm font-medium text-white transition-[filter] hover:brightness-110 md:px-5"
           >
             Comprar acceso
-          </a>
+          </button>
         </div>
       </nav>
     </header>

@@ -12,12 +12,14 @@ function getAgeLabel(birthdate) {
   return `${months} mes${months === 1 ? '' : 'es'}`
 }
 
-function StepConfirmation({ isTwins, names, birthdate, onFinish, saving, error }) {
+function StepConfirmation({ isTwins, names, parentName, birthdate, onFinish, saving, error }) {
   const ageLabel = getAgeLabel(birthdate)
 
   return (
     <div className="text-center">
-      <h1 className="font-display text-2xl font-bold md:text-3xl">¡Todo listo!</h1>
+      <h1 className="font-display text-2xl font-bold md:text-3xl">
+        {parentName.trim() ? `¡Todo listo, ${parentName.trim()}!` : '¡Todo listo!'}
+      </h1>
       <p className="mt-2 font-body text-sm text-textSecondary">
         Ya podemos empezar a calcular las ventanas de sueño de tu bebé.
       </p>

@@ -4,13 +4,18 @@ import { useAuth } from './AuthContext'
 
 const SubscriptionContext = createContext(null)
 
+// Todo usuário que chega hasta el registro ya compró el acceso en Hotmart —
+// no hay más flujo gratuito dentro de la app. isPremium default true refleja
+// eso. Si en el futuro se reintroduce un modelo freemium o de suscripción
+// recurrente, este default vuelve a ser false y la integración real de pago
+// entra acá.
 export function SubscriptionProvider({ children }) {
   const { user } = useAuth()
-  const [isPremium, setIsPremium] = useState(false)
+  const [isPremium, setIsPremium] = useState(true)
 
   useEffect(() => {
     if (!user) {
-      setIsPremium(false)
+      setIsPremium(true)
       return
     }
 
@@ -30,7 +35,7 @@ export function SubscriptionProvider({ children }) {
         return
       }
 
-      setIsPremium(data?.is_premium ?? false)
+      setIsPremium(data?.is_premium ?? true)
     }
 
     loadProfile()

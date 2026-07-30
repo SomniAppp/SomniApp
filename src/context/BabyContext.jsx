@@ -9,6 +9,7 @@ export function BabyProvider({ children }) {
   const [babies, setBabies] = useState([])
   const [activeBabyId, setActiveBabyId] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [parentName, setParentName] = useState('')
 
   useEffect(() => {
     if (!user) {
@@ -61,7 +62,9 @@ export function BabyProvider({ children }) {
   }
 
   return (
-    <BabyContext.Provider value={{ babies, setBabies, activeBabyId, setActiveBabyId, addBaby, loading }}>
+    <BabyContext.Provider
+      value={{ babies, setBabies, activeBabyId, setActiveBabyId, addBaby, loading, parentName, setParentName }}
+    >
       {children}
     </BabyContext.Provider>
   )

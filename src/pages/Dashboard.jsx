@@ -78,12 +78,13 @@ function Dashboard() {
   const [activeModal, setActiveModal] = useState(null)
   const [showPaywall, setShowPaywall] = useState(false)
   const { theme, toggleTheme } = useTheme()
-  const { babies, activeBabyId, setActiveBabyId } = useBabies()
+  const { babies, activeBabyId, setActiveBabyId, parentName } = useBabies()
   const { isPremium } = useSubscription()
   const { logs } = useActivity()
 
   const activeBaby = babies.find((baby) => baby.id === activeBabyId)
   const babyName = activeBaby?.name ?? 'tu bebé'
+  const greetingName = parentName.trim() || babyName
 
   const hasEntries = logs.length > 0
   const recentActivity = useMemo(() => logs.slice(0, 5).map(logToActivityItem), [logs])
@@ -110,7 +111,7 @@ function Dashboard() {
   return (
     <div className="px-4 pb-24 pt-8">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold">Hola, {babyName}</h1>
+        <h1 className="font-display text-2xl font-bold">Hola, {greetingName}</h1>
         <button
           onClick={toggleTheme}
           aria-label="Cambiar tema"

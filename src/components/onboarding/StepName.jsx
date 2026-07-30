@@ -14,28 +14,40 @@ function ToggleButton({ active, children, ...props }) {
   )
 }
 
-function StepName({ isTwins, onToggleTwins, names, onChangeName, onNext }) {
+function StepName({ isTwins, onToggleTwins, names, onChangeName, parentName, onChangeParentName, onNext }) {
   const canContinue = isTwins
-    ? names[0].trim() && names[1].trim()
-    : names[0].trim()
+    ? parentName.trim() && names[0].trim() && names[1].trim()
+    : parentName.trim() && names[0].trim()
 
   return (
     <div>
-      <div className="flex gap-3">
-        <ToggleButton active={!isTwins} onClick={() => onToggleTwins(false)}>
-          Bebé único
-        </ToggleButton>
-        <ToggleButton active={isTwins} onClick={() => onToggleTwins(true)}>
-          Mellizos o gemelos
-        </ToggleButton>
-      </div>
+      <h1 className="font-display text-2xl font-bold md:text-3xl">Antes que nada, ¿cómo te llamás?</h1>
 
-      <h1 className="mt-6 font-display text-2xl font-bold md:text-3xl">
-        {isTwins ? '¿Cómo se llaman tus mellizos?' : '¿Cómo se llama tu bebé?'}
-      </h1>
-      <p className="mt-2 font-body text-sm text-textSecondary">
-        Así vamos a personalizar todo para tu bebé.
-      </p>
+      <input
+        type="text"
+        value={parentName}
+        onChange={(event) => onChangeParentName(event.target.value)}
+        placeholder="Tu nombre"
+        className="mt-6 w-full rounded-button border border-textPrimary/[0.08] bg-surface px-4 py-3 font-body text-base text-textPrimary outline-none placeholder:text-textSecondary focus:border-[#9B6BF2]"
+      />
+
+      <div className="mt-8 border-t border-textPrimary/[0.08] pt-8">
+        <div className="flex gap-3">
+          <ToggleButton active={!isTwins} onClick={() => onToggleTwins(false)}>
+            Bebé único
+          </ToggleButton>
+          <ToggleButton active={isTwins} onClick={() => onToggleTwins(true)}>
+            Mellizos o gemelos
+          </ToggleButton>
+        </div>
+
+        <h2 className="mt-6 font-display text-xl font-bold md:text-2xl">
+          {isTwins ? '¿Y tus mellizos?' : '¿Y tu bebé?'}
+        </h2>
+        <p className="mt-2 font-body text-sm text-textSecondary">
+          Así vamos a personalizar todo para tu bebé.
+        </p>
+      </div>
 
       <input
         type="text"

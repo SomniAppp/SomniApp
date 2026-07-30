@@ -2,32 +2,28 @@ import { useState } from 'react'
 
 const QUESTIONS = [
   {
-    question: '¿Funciona para cualquier bebé?',
+    question: '¿Por qué es tan barato comparado con Huckleberry?',
     answer:
-      'Sí. Somni está pensado para bebés de 0 a 12 meses y ajusta las predicciones a medida que el ritmo de tu bebé cambia con el tiempo.',
+      'Porque no cobramos mensualidad. Un pago cubre el desarrollo del producto de una sola vez — vos no pagás por mantener una suscripción activa que quizás ni uses todos los meses.',
   },
   {
-    question: '¿Necesito internet para usarlo?',
+    question: '¿Cómo sé que la predicción va a ser precisa para MI bebé?',
     answer:
-      'Podés registrar siestas y tomas sin conexión. Las predicciones y el chat con la IA se actualizan apenas tengas internet de nuevo.',
+      'Somni no usa una tabla genérica por edad. Usa lo que vos registrás — sueño, mamadas, pañales — para calcular el patrón real de tu bebé, y lo actualiza semana a semana.',
   },
   {
-    question: '¿Cuántos bebés puedo registrar?',
-    answer: 'Tu cuenta permite registrar más de un bebé sin costo adicional.',
+    question: 'Tengo gemelos / mellizos, ¿esto funciona igual?',
+    answer:
+      'Sí. Somni tiene soporte para múltiples bebés desde el registro inicial — no es una función extra, es parte del producto.',
   },
   {
-    question: '¿Voy a pagar todos los meses?',
+    question: 'Ya probé otras apps y no funcionaron',
     answer:
-      'No. Pagás una sola vez $9.90 y tenés acceso de por vida a todas las funciones premium. Sin mensualidades, sin sorpresas en tu tarjeta.',
-  },
-  {
-    question: '¿En qué idioma está la app?',
-    answer:
-      'Somni está en español, pensado para familias de Latinoamérica y España.',
+      'La mayoría de las apps de sueño son diarios: registran, pero no predicen. Somni usa esos registros para decirte el momento exacto — no solo para guardar el historial.',
   },
 ]
 
-function FAQItem({ item, isOpen, onToggle }) {
+function ObjectionItem({ item, isOpen, onToggle }) {
   return (
     <div className="rounded-card border border-textPrimary/[0.08] bg-surface p-6">
       <button
@@ -52,18 +48,18 @@ function FAQItem({ item, isOpen, onToggle }) {
   )
 }
 
-function FAQ() {
+function Objections() {
   const [openIndex, setOpenIndex] = useState(null)
 
   return (
-    <section id="preguntas" className="mx-auto max-w-6xl px-6 py-12 md:py-24">
+    <section className="mx-auto max-w-6xl px-6 py-12 md:py-24">
       <h2 className="text-center font-display text-2xl font-bold md:text-3xl">
-        Preguntas frecuentes
+        Antes de que lo pienses dos veces
       </h2>
 
       <div className="mx-auto mt-10 flex max-w-2xl flex-col gap-4">
         {QUESTIONS.map((item, index) => (
-          <FAQItem
+          <ObjectionItem
             key={item.question}
             item={item}
             isOpen={openIndex === index}
@@ -75,4 +71,4 @@ function FAQ() {
   )
 }
 
-export default FAQ
+export default Objections
