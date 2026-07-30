@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import QuickLogModal from '../components/QuickLogModal'
 import PaywallModal from '../components/PaywallModal'
+import SleepCycleView from '../components/SleepCycleView'
 import { MoonIcon, BottleIcon, DiaperIcon, ActivityItem, logToActivityItem } from '../components/activityIcons'
 import { useTheme } from '../hooks/useTheme'
 import { useBabies } from '../context/BabyContext'
@@ -77,14 +78,30 @@ function typeToModalType(type) {
 function Dashboard() {
   const [activeModal, setActiveModal] = useState(null)
   const [showPaywall, setShowPaywall] = useState(false)
+  const [endingSleep, setEndingSleep] = useState(false)
   const { theme, toggleTheme } = useTheme()
   const { babies, activeBabyId, setActiveBabyId, parentName } = useBabies()
   const { isPremium } = useSubscription()
-  const { logs } = useActivity()
+  const { logs, activeSleepStart, endSleepSession } = useActivity()
+
+  // TODO temporal: quitar este log una vez confirmado que activeSleepStart
+  // cambia correctamente al iniciar/terminar una sesión de sueño.
+  useEffect(() => {
+    console.log('[Dashboard] activeSleepStart:', activeSleepStart)
+  }, [activeSleepStart])
 
   const activeBaby = babies.find((baby) => baby.id === activeBabyId)
   const babyName = activeBaby?.name ?? 'tu bebé'
   const greetingName = parentName.trim() || babyName
+
+  async function handleEndSleepSession() {
+    setEndingSleep(true)
+    try {
+      await endSleepSession()
+    } finally {
+      setEndingSleep(false)
+    }
+  }
 
   const hasEntries = logs.length > 0
   const recentActivity = useMemo(() => logs.slice(0, 5).map(logToActivityItem), [logs])
@@ -139,53 +156,63 @@ function Dashboard() {
         </div>
       )}
 
-      <div className="relative mt-6 overflow-hidden rounded-card border border-textPrimary/[0.08] bg-surface p-6">
-        {hasEntries ? (
-          <>
-            <p className="font-body text-xs font-medium uppercase tracking-wider text-textSecondary">
-              Próxima siesta
-            </p>
-
-            <div className={isPremium ? '' : 'blur-sm'}>
-              <div className="mt-2 flex items-start justify-between gap-4">
-                <p className="font-display text-4xl font-bold text-textPrimary sm:text-5xl">
-                  {NEXT_WINDOW.start} - {NEXT_WINDOW.end}
-                </p>
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-gradient text-white">
-                  <MoonIcon />
-                </div>
-              </div>
-
-              <p className="mt-2 font-body text-sm text-textSecondary">
-                Ventana ideal {NEXT_WINDOW.idealStart} - {NEXT_WINDOW.idealEnd}
+      {activeSleepStart ? (
+        <div className="mt-6">
+          <SleepCycleView
+            activeSleepStart={activeSleepStart}
+            onEndSession={handleEndSleepSession}
+            ending={endingSleep}
+          />
+        </div>
+      ) : (
+        <div className="relative mt-6 overflow-hidden rounded-card border border-textPrimary/[0.08] bg-surface p-6">
+          {hasEntries ? (
+            <>
+              <p className="font-body text-xs font-medium uppercase tracking-wider text-textSecondary">
+                Próxima siesta
               </p>
 
-              <div className="relative mt-4 h-2 rounded-full bg-background">
-                <div
-                  className="h-2 rounded-full bg-brand-gradient"
-                  style={{ width: `${NEXT_WINDOW.progress}%` }}
-                />
+              <div className={isPremium ? '' : 'blur-sm'}>
+                <div className="mt-2 flex items-start justify-between gap-4">
+                  <p className="font-display text-4xl font-bold text-textPrimary sm:text-5xl">
+                    {NEXT_WINDOW.start} - {NEXT_WINDOW.end}
+                  </p>
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-gradient text-white">
+                    <MoonIcon />
+                  </div>
+                </div>
+
+                <p className="mt-2 font-body text-sm text-textSecondary">
+                  Ventana ideal {NEXT_WINDOW.idealStart} - {NEXT_WINDOW.idealEnd}
+                </p>
+
+                <div className="relative mt-4 h-2 rounded-full bg-background">
+                  <div
+                    className="h-2 rounded-full bg-brand-gradient"
+                    style={{ width: `${NEXT_WINDOW.progress}%` }}
+                  />
+                </div>
+
+                <p className="mt-3 font-body text-sm font-medium text-textSecondary">{NEXT_WINDOW.status}</p>
               </div>
 
-              <p className="mt-3 font-body text-sm font-medium text-textSecondary">{NEXT_WINDOW.status}</p>
-            </div>
-
-            {!isPremium && (
-              <button
-                onClick={() => setShowPaywall(true)}
-                className="absolute inset-0 top-9 flex flex-col items-center justify-center gap-2 bg-surface/60"
-              >
-                <LockIcon />
-                <span className="font-body text-sm font-medium text-textPrimary">Desbloqueá la predicción</span>
-              </button>
-            )}
-          </>
-        ) : (
-          <p className="font-body text-base font-medium text-textPrimary">
-            Registrá el primer sueño para que Somni empiece a aprender el ritmo de {babyName}
-          </p>
-        )}
-      </div>
+              {!isPremium && (
+                <button
+                  onClick={() => setShowPaywall(true)}
+                  className="absolute inset-0 top-9 flex flex-col items-center justify-center gap-2 bg-surface/60"
+                >
+                  <LockIcon />
+                  <span className="font-body text-sm font-medium text-textPrimary">Desbloqueá la predicción</span>
+                </button>
+              )}
+            </>
+          ) : (
+            <p className="font-body text-base font-medium text-textPrimary">
+              Registrá el primer sueño para que Somni empiece a aprender el ritmo de {babyName}
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="mt-6">
         <p className="font-body text-xs font-medium uppercase tracking-wider text-textSecondary">

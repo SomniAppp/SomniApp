@@ -14,7 +14,7 @@ import StepConfirmation from '../components/onboarding/StepConfirmation'
 function Onboarding() {
   const navigate = useNavigate()
   const { theme } = useTheme()
-  const { addBaby, setActiveBabyId, setParentName } = useBabies()
+  const { setBabies, setActiveBabyId, setParentName } = useBabies()
   const [step, setStep] = useState(1)
   const [isTwins, setIsTwins] = useState(false)
   const [names, setNames] = useState(['', ''])
@@ -46,11 +46,14 @@ function Onboarding() {
     setSaving(true)
     setError('')
     try {
-      const createdBabies = []
-      for (const name of activeNames) {
-        createdBabies.push(await addBaby({ name, birthdate }))
-      }
-      setActiveBabyId(createdBabies[0].id)
+      const newBabies = activeNames.map((name) => ({
+        id: crypto.randomUUID(),
+        name,
+        birthdate,
+        created_at: new Date().toISOString(),
+      }))
+      setBabies(newBabies)
+      setActiveBabyId(newBabies[0].id)
       setParentName(parentNameInput)
       navigate('/app')
     } catch (err) {

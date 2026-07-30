@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { useAuth } from '../context/AuthContext'
+import { useBabies } from '../context/BabyContext'
 import iconDark from '../assets/somni-icon-dark.png'
 import iconLight from '../assets/somni-icon-light.png'
 import wordmarkDark from '../assets/somni-wordmark-dark.png'
@@ -11,6 +12,7 @@ function Auth() {
   const navigate = useNavigate()
   const { theme } = useTheme()
   const { signUp, signIn } = useAuth()
+  const { babies } = useBabies()
   const [searchParams] = useSearchParams()
   const [mode, setMode] = useState(searchParams.get('mode') === 'login' ? 'login' : 'signup')
   const [email, setEmail] = useState('')
@@ -37,7 +39,7 @@ function Auth() {
       } else {
         await signIn(email, password)
       }
-      navigate('/onboarding')
+      navigate(babies.length > 0 ? '/app' : '/onboarding')
     } catch (err) {
       setError(err.message)
     } finally {

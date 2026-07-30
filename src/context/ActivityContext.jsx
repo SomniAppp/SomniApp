@@ -59,6 +59,18 @@ export function ActivityProvider({ children }) {
     return data
   }
 
+  const activeSleepLog = logs.find((log) => log.type === 'sueño' && !log.ended_at) ?? null
+  const activeSleepStart = activeSleepLog?.started_at ?? null
+
+  function startSleepSession() {
+    return addLog({ type: 'sueño', started_at: new Date().toISOString(), ended_at: null })
+  }
+
+  function endSleepSession() {
+    if (!activeSleepLog) return Promise.resolve(null)
+    return updateLog(activeSleepLog.id, { ended_at: new Date().toISOString() })
+  }
+
   async function updateLog(id, entry) {
     const { data, error } = await supabase
       .from('activity_logs')
@@ -80,7 +92,18 @@ export function ActivityProvider({ children }) {
   }
 
   return (
-    <ActivityContext.Provider value={{ logs, loading, addLog, updateLog, deleteLog }}>
+    <ActivityContext.Provider
+      value={{
+        logs,
+        loading,
+        addLog,
+        updateLog,
+        deleteLog,
+        activeSleepStart,
+        startSleepSession,
+        endSleepSession,
+      }}
+    >
       {children}
     </ActivityContext.Provider>
   )

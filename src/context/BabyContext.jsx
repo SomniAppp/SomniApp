@@ -1,64 +1,44 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
-import { useAuth } from './AuthContext'
 
 const BabyContext = createContext(null)
 
+// TODO: reemplazar por persistencia real en Supabase cuando el backend esté
+// integrado. Por ahora, mientras no haya cuentas reales con datos en el
+// servidor, el localStorage actúa como la única fuente de verdad para
+// sobrevivir a reloads/logins.
+const STORAGE_KEY = 'somni-baby-data'
+
+function loadStoredData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
+}
+
 export function BabyProvider({ children }) {
-  const { user } = useAuth()
-  const [babies, setBabies] = useState([])
-  const [activeBabyId, setActiveBabyId] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [parentName, setParentName] = useState('')
+  const stored = loadStoredData()
+  const [babies, setBabies] = useState(stored?.babies ?? [])
+  const [activeBabyId, setActiveBabyId] = useState(stored?.activeBabyId ?? null)
+  const [parentName, setParentName] = useState(stored?.parentName ?? '')
+  const [loading] = useState(false)
 
   useEffect(() => {
-    if (!user) {
-      setBabies([])
-      setActiveBabyId(null)
-      setLoading(false)
-      return
-    }
-
-    let cancelled = false
-    setLoading(true)
-
-    async function loadBabies() {
-      const { data, error } = await supabase
-        .from('babies')
-        .select('*')
-        .order('created_at', { ascending: true })
-
-      if (cancelled) return
-
-      if (error) {
-        console.error('Error al cargar los bebés:', error)
-        setLoading(false)
-        return
-      }
-
-      setBabies(data ?? [])
-      setActiveBabyId(data?.[0]?.id ?? null)
-      setLoading(false)
-    }
-
-    loadBabies()
-
-    return () => {
-      cancelled = true
-    }
-  }, [user])
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ babies, activeBabyId, parentName }))
+  }, [babies, activeBabyId, parentName])
 
   async function addBaby({ name, birthdate }) {
-    const { data, error } = await supabase
-      .from('babies')
-      .insert({ name, birthdate, user_id: user.id })
-      .select()
-      .single()
-    if (error) throw error
-
-    setBabies((prev) => [...prev, data])
-    setActiveBabyId((prev) => prev ?? data.id)
-    return data
+    const baby = {
+      id: crypto.randomUUID(),
+      name,
+      birthdate,
+      created_at: new Date().toISOString(),
+    }
+    setBabies((prev) => [...prev, baby])
+    setActiveBabyId((prev) => prev ?? baby.id)
+    return baby
   }
 
   return (

@@ -58,9 +58,9 @@ function SueñoForm({ existingEntry, onChange }) {
 
   useEffect(() => {
     if (mode === 'now') {
-      onChange({ started_at: new Date().toISOString(), ended_at: null })
+      onChange({ started_at: new Date().toISOString(), ended_at: null, startNow: true })
     } else {
-      onChange({ started_at: timeToTodayISO(start), ended_at: timeToTodayISO(end) })
+      onChange({ started_at: timeToTodayISO(start), ended_at: timeToTodayISO(end), startNow: false })
     }
   }, [mode, start, end])
 
@@ -162,7 +162,7 @@ function PañalForm({ existingEntry, onChange }) {
 }
 
 function QuickLogModal({ type, existingEntry, onClose }) {
-  const { addLog, updateLog, deleteLog } = useActivity()
+  const { addLog, updateLog, deleteLog, startSleepSession } = useActivity()
   const [visible, setVisible] = useState(false)
   const [confirmingDelete, setConfirmingDelete] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -182,10 +182,13 @@ function QuickLogModal({ type, existingEntry, onClose }) {
   async function handleSave() {
     setSaving(true)
     try {
+      const { startNow, ...entry } = formData
       if (isEditing) {
-        await updateLog(existingEntry.id, formData)
+        await updateLog(existingEntry.id, entry)
+      } else if (type === 'sueño' && startNow) {
+        await startSleepSession()
       } else {
-        await addLog({ type, ...formData })
+        await addLog({ type, ...entry })
       }
       handleClose()
     } finally {
