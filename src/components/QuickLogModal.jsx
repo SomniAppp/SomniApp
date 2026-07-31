@@ -167,6 +167,7 @@ function QuickLogModal({ type, existingEntry, onClose }) {
   const [confirmingDelete, setConfirmingDelete] = useState(false)
   const [saving, setSaving] = useState(false)
   const [formData, setFormData] = useState({})
+  const [error, setError] = useState('')
   const isEditing = Boolean(existingEntry)
 
   useEffect(() => {
@@ -181,6 +182,7 @@ function QuickLogModal({ type, existingEntry, onClose }) {
 
   async function handleSave() {
     setSaving(true)
+    setError('')
     try {
       const { startNow, ...entry } = formData
       if (isEditing) {
@@ -191,6 +193,8 @@ function QuickLogModal({ type, existingEntry, onClose }) {
         await addLog({ type, ...entry })
       }
       handleClose()
+    } catch (err) {
+      setError(err.message)
     } finally {
       setSaving(false)
     }
@@ -198,9 +202,12 @@ function QuickLogModal({ type, existingEntry, onClose }) {
 
   async function handleDelete() {
     setSaving(true)
+    setError('')
     try {
       await deleteLog(existingEntry.id)
       handleClose()
+    } catch (err) {
+      setError(err.message)
     } finally {
       setSaving(false)
     }
@@ -236,6 +243,8 @@ function QuickLogModal({ type, existingEntry, onClose }) {
         {type === 'sueño' && <SueñoForm existingEntry={existingEntry} onChange={setFormData} />}
         {type === 'toma' && <TomaForm existingEntry={existingEntry} onChange={setFormData} />}
         {type === 'pañal' && <PañalForm existingEntry={existingEntry} onChange={setFormData} />}
+
+        {error && <p className="mt-4 font-body text-sm text-red-500">{error}</p>}
 
         <button
           onClick={handleSave}
