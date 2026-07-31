@@ -5,11 +5,10 @@ const SubscriptionContext = createContext(null)
 // TODO: reemplazar por persistencia real en Supabase cuando el backend esté
 // integrado. Por ahora el localStorage sobrevive a reloads/logins.
 //
-// Todo usuário que chega hasta el registro ya compró el acceso en Hotmart —
-// no hay más flujo gratuito dentro de la app. isPremium default true refleja
-// eso. Si en el futuro se reintroduce un modelo freemium o de suscripción
-// recurrente, este default vuelve a ser false y la integración real de pago
-// entra acá.
+// isPremium default true asume que todo usuario que llega al registro ya
+// tiene una suscripción activa vía Hotmart. Cuando la integración real de
+// pago entre acá, este default debería reflejar el estado real de la
+// suscripción (activa/cancelada/vencida).
 const STORAGE_KEY = 'somni-subscription'
 
 function loadStoredIsPremium() {

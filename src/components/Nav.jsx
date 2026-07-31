@@ -79,7 +79,7 @@ function Nav({ theme, toggleTheme }) {
             onClick={() => scrollToId('#precios')}
             className="whitespace-nowrap rounded-button bg-brand-gradient px-3 py-2 font-body text-sm font-medium text-white transition-[filter] hover:brightness-110 md:px-5"
           >
-            Comprar acceso
+            Comenzar
           </button>
         </div>
       </nav>

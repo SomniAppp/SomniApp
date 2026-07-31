@@ -2,28 +2,34 @@ import { useState } from 'react'
 
 const QUESTIONS = [
   {
-    question: '¿Funciona para cualquier bebé?',
+    question: '¿Puedo cancelar mi suscripción cuando quiera?',
     answer:
-      'Sí. Somni está pensado para bebés de 0 a 12 meses y ajusta las predicciones a medida que el ritmo de tu bebé cambia con el tiempo.',
+      'Sí. Puedes cancelar tu suscripción en cualquier momento desde tu cuenta. No existen contratos de permanencia ni cargos ocultos.',
   },
   {
-    question: '¿Necesito internet para usarlo?',
+    question: '¿Cómo se realiza el cobro si vivo en México, Colombia o Chile?',
     answer:
-      'Podés registrar siestas y tomas sin conexión. Las predicciones y el chat con la IA se actualizan apenas tengas internet de nuevo.',
+      'El pago se procesa de forma segura mediante Hotmart. El importe se convierte automáticamente a la moneda de tu tarjeta según el tipo de cambio y las condiciones de tu banco. No necesitas hacer ninguna conversión manual.',
   },
   {
-    question: '¿Cuántos bebés puedo registrar?',
-    answer: 'Tu cuenta permite registrar más de un bebé sin costo adicional.',
+    question: '¿Funciona para bebés de cualquier edad?',
+    answer:
+      'Somni está diseñado para acompañar a familias con bebés desde el nacimiento hasta aproximadamente los 2 años, adaptando las recomendaciones a cada etapa del desarrollo.',
   },
   {
-    question: '¿Voy a pagar todos los meses?',
+    question: '¿Necesito conocimientos sobre sueño infantil?',
     answer:
-      'No. Pagás una sola vez $9.90 y tenés acceso de por vida a todas las funciones premium. Sin mensualidades, sin sorpresas en tu tarjeta.',
+      'No. Somni fue creado precisamente para simplificar todo el proceso. Solo registras cuándo tu bebé despierta y la aplicación hace el resto.',
   },
   {
-    question: '¿En qué idioma está la app?',
+    question: '¿Recibiré recordatorios?',
     answer:
-      'Somni está en español, pensado para familias de Latinoamérica y España.',
+      'Sí. Somni te envía alertas antes de la próxima ventana de sueño para ayudarte a acostar a tu bebé en el momento ideal.',
+  },
+  {
+    question: '¿Qué pasa si mi rutina cambia?',
+    answer:
+      'No hay problema. Puedes registrar nuevos despertares en cualquier momento y Somni recalculará automáticamente la siguiente ventana de sueño.',
   },
 ]
 

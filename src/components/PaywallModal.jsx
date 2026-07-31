@@ -38,8 +38,8 @@ function PaywallModal({ onClose }) {
     setTimeout(onClose, 200)
   }
 
-  function handleGetLifetimeAccess() {
-    // TODO: reemplazar por la integración real de pago único (Stripe, etc.) cuando exista
+  function handleSubscribe() {
+    // TODO: reemplazar por la integración real de checkout de Hotmart cuando exista
     togglePremium(true)
     handleClose()
   }
@@ -75,14 +75,14 @@ function PaywallModal({ onClose }) {
           ))}
         </ul>
 
-        <p className="mt-6 font-display text-3xl font-bold text-textPrimary">$9.90</p>
-        <p className="mt-1 font-body text-sm text-textSecondary">Pago único, acceso de por vida</p>
+        <p className="mt-6 font-display text-3xl font-bold text-textPrimary">$7,99</p>
+        <p className="mt-1 font-body text-sm text-textSecondary">por mes. Cancela cuando quieras.</p>
 
         <button
-          onClick={handleGetLifetimeAccess}
+          onClick={handleSubscribe}
           className="mt-6 w-full rounded-button bg-brand-gradient px-6 py-3 font-body text-base font-medium text-white transition-[filter] hover:brightness-110"
         >
-          Obtener acceso de por vida
+          Suscribirme por $7,99/mes
         </button>
 
         <button

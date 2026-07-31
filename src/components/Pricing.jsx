@@ -1,5 +1,4 @@
 import CTAButton from './CTAButton'
-import LaunchBadge from './LaunchBadge'
 
 function ShieldIcon() {
   return (
@@ -22,15 +21,14 @@ function Pricing() {
   return (
     <section id="precios" className="mx-auto max-w-6xl px-6 pt-8 pb-12 md:pt-16 md:pb-24">
       <h2 className="mx-auto max-w-2xl text-center font-display text-2xl font-bold md:text-3xl">
-        Un pago. Acceso completo. Para siempre.
+        Empieza hoy por solo $7,99 USD al mes
       </h2>
 
       <div className="mx-auto mt-12 max-w-md rounded-card bg-brand-gradient p-[1.5px]">
         <div className="rounded-card bg-surface p-8 text-center">
-          <LaunchBadge />
-          <p className="mt-4 font-body text-sm font-medium text-textSecondary">Pago único</p>
-          <p className="mt-2 font-display text-4xl font-bold">$9.90</p>
-          <p className="mt-1 font-body text-sm text-textSecondary">Acceso de por vida</p>
+          <p className="font-body text-sm font-medium text-textSecondary">Suscripción mensual</p>
+          <p className="mt-2 font-display text-4xl font-bold">$7,99</p>
+          <p className="mt-1 font-body text-sm text-textSecondary">por mes</p>
 
           <p className="mt-6 font-body text-sm font-medium text-textPrimary">Incluye:</p>
           <ul className="mt-4 space-y-3 text-left">
@@ -45,8 +43,7 @@ function Pricing() {
           </ul>
 
           <p className="mt-8 font-body text-sm text-textSecondary">
-            Sin mensualidad. Sin renovación automática. Sin sorpresas en la
-            tarjeta el mes que viene.
+            Cancela cuando quieras. Sin contratos.
           </p>
 
           <CTAButton className="mt-8 w-full" toCheckout />

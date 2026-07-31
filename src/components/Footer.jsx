@@ -9,10 +9,12 @@ function Footer({ theme }) {
     <footer className="border-t border-textPrimary/[0.08]">
       <div className="mx-auto max-w-6xl px-6 py-12 text-center md:py-20">
         <h2 className="font-display text-2xl font-bold md:text-3xl">
-          Dejá de adivinar a las 2 AM.
+          Empieza hoy por solo $7,99 USD al mes
         </h2>
         <p className="mx-auto mt-4 max-w-xl font-body text-lg text-textSecondary">
-          Un pago de $9.90. Sin mensualidad. Acceso para siempre.
+          Cada día que pasa sin conocer la ventana de sueño ideal puede
+          convertirse en otra noche difícil para toda la familia. Cancela
+          cuando quieras. Sin contratos.
         </p>
         <div className="mt-8">
           <CTAButton />
