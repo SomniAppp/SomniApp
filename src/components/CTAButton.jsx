@@ -4,7 +4,7 @@ function scrollToPricing() {
   document.querySelector('#precios')?.scrollIntoView({ behavior: 'smooth' })
 }
 
-function CTAButton({ className = '', children = 'Comprar acceso — $9.90', toCheckout = false }) {
+function CTAButton({ className = '', children = 'Comprar acceso', toCheckout = false }) {
   const sharedClassName = `inline-block rounded-button bg-brand-gradient px-8 py-4 font-body text-base font-medium text-white shadow-[0_8px_30px_-8px_rgba(155,107,242,0.6)] transition-[filter] hover:brightness-110 ${className}`
 
   if (toCheckout) {
