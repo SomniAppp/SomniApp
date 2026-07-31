@@ -19,9 +19,6 @@ function Hero() {
         </p>
         <div className="mt-10 flex flex-col items-center gap-3">
           <CTAButton />
-          <p className="font-body text-xs text-textSecondary">
-            Se abre en una página segura de pago (Hotmart). Volvés acá para crear tu cuenta.
-          </p>
           <LaunchBadge />
         </div>
         <div className="mx-auto mt-20 max-w-xl">

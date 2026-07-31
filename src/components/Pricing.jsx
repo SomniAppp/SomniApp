@@ -51,10 +51,6 @@ function Pricing() {
 
           <CTAButton className="mt-8 w-full" toCheckout />
 
-          <p className="mt-4 font-body text-xs text-textSecondary">
-            Se abre en una página segura de pago (Hotmart). Volvés acá para crear tu cuenta.
-          </p>
-
           <p className="mt-4 flex items-center justify-center gap-2 font-body text-sm text-textSecondary">
             <ShieldIcon />
             Garantía de 7 días. Si no te convence, te devolvemos tu dinero.
