@@ -11,11 +11,11 @@ function ShieldIcon() {
 }
 
 const FEATURES = [
-  'Predicción de sueño con IA, actualizada según el ritmo real de tu bebé',
-  'Chat con IA para resolver dudas sobre sueño, en el momento en que las tenés',
-  'Registro ilimitado de sueño, mamadas y pañales',
-  'Soporte para gemelos y múltiples bebés',
-  'Historial completo con gráfico de tendencia de sueño',
+  'Sabés la próxima hora de dormir antes de que tu bebé se ponga a llorar',
+  'Preguntás cualquier duda a las 2 AM y recibís respuesta al instante',
+  'Registrás sueño, tomas y pañales en segundos, sin límite',
+  'Funciona igual de bien con uno o dos bebés',
+  'Ves el progreso de tu bebé semana a semana',
 ]
 
 function Pricing() {
@@ -51,9 +51,17 @@ function Pricing() {
 
           <CTAButton className="mt-8 w-full" toCheckout />
 
+          <p className="mt-4 font-body text-xs text-textSecondary">
+            Se abre en una página segura de pago (Hotmart). Volvés acá para crear tu cuenta.
+          </p>
+
           <p className="mt-4 flex items-center justify-center gap-2 font-body text-sm text-textSecondary">
             <ShieldIcon />
             Garantía de 7 días. Si no te convence, te devolvemos tu dinero.
+          </p>
+
+          <p className="mt-2 font-body text-xs text-textSecondary">
+            Pago procesado por Hotmart, la plataforma de pagos más usada de Latinoamérica.
           </p>
         </div>
       </div>

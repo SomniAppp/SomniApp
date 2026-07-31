@@ -5,16 +5,23 @@ function Hero() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-12 md:py-32">
       <div className="mx-auto max-w-3xl text-center">
-        <h1 className="font-display text-3xl font-bold leading-tight md:text-5xl">
-          Sabé exactamente cuándo tu bebé necesita dormir
+        <p className="font-body text-sm uppercase tracking-widest text-textSecondary">
+          Lo que ningún calculador de horarios te dice:
+        </p>
+        <h1 className="mt-4 font-display text-3xl font-bold leading-tight md:text-5xl">
+          No es hambre. No es el pañal. Es que se pasó su ventana de sueño —
+          y nadie te avisó.
         </h1>
         <p className="mx-auto mt-6 max-w-xl font-body text-lg text-textSecondary">
-          Nada de adivinar la hora ni de noches de llanto por dormir tarde. Somni
-          aprende el ritmo de tu bebé y te avisa el momento justo — sin mensualidad,
-          pagás una vez y usás para siempre.
+          Los horarios fijos por edad no funcionan porque el ritmo de tu bebé
+          cambia cada semana. Somni aprende el patrón real, no una tabla
+          genérica.
         </p>
         <div className="mt-10 flex flex-col items-center gap-3">
           <CTAButton />
+          <p className="font-body text-xs text-textSecondary">
+            Se abre en una página segura de pago (Hotmart). Volvés acá para crear tu cuenta.
+          </p>
           <LaunchBadge />
         </div>
         <div className="mx-auto mt-20 max-w-xl">
