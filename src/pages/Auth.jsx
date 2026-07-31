@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { useAuth } from '../context/AuthContext'
@@ -12,7 +12,7 @@ function Auth() {
   const navigate = useNavigate()
   const { theme } = useTheme()
   const { signUp, signIn } = useAuth()
-  const { babies } = useBabies()
+  const { babies, isLoadingBabies } = useBabies()
   const [searchParams] = useSearchParams()
   const [mode, setMode] = useState(searchParams.get('mode') === 'login' ? 'login' : 'signup')
   const [email, setEmail] = useState('')
@@ -20,8 +20,14 @@ function Auth() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [awaitingBabies, setAwaitingBabies] = useState(false)
 
   const isSignup = mode === 'signup'
+
+  useEffect(() => {
+    if (!awaitingBabies || isLoadingBabies) return
+    navigate(babies.length > 0 ? '/app' : '/onboarding')
+  }, [awaitingBabies, isLoadingBabies, babies, navigate])
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -39,10 +45,9 @@ function Auth() {
       } else {
         await signIn(email, password)
       }
-      navigate(babies.length > 0 ? '/app' : '/onboarding')
+      setAwaitingBabies(true)
     } catch (err) {
       setError(err.message)
-    } finally {
       setSubmitting(false)
     }
   }

@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
+import { useAuth } from '../context/AuthContext'
 import { useBabies } from '../context/BabyContext'
+import { supabase } from '../lib/supabase'
 import iconDark from '../assets/somni-icon-dark.png'
 import iconLight from '../assets/somni-icon-light.png'
 import wordmarkDark from '../assets/somni-wordmark-dark.png'
@@ -14,6 +16,7 @@ import StepConfirmation from '../components/onboarding/StepConfirmation'
 function Onboarding() {
   const navigate = useNavigate()
   const { theme } = useTheme()
+  const { user } = useAuth()
   const { setBabies, setActiveBabyId, setParentName } = useBabies()
   const [step, setStep] = useState(1)
   const [isTwins, setIsTwins] = useState(false)
@@ -46,12 +49,21 @@ function Onboarding() {
     setSaving(true)
     setError('')
     try {
-      const newBabies = activeNames.map((name) => ({
-        id: crypto.randomUUID(),
+      const rowsToInsert = activeNames.map((name) => ({
+        user_id: user.id,
         name,
         birthdate,
-        created_at: new Date().toISOString(),
       }))
+
+      const [babiesResult, profileResult] = await Promise.all([
+        supabase.from('babies').insert(rowsToInsert).select(),
+        supabase.from('profiles').update({ parent_name: parentNameInput }).eq('id', user.id),
+      ])
+
+      if (babiesResult.error) throw babiesResult.error
+      if (profileResult.error) throw profileResult.error
+
+      const newBabies = babiesResult.data
       setBabies(newBabies)
       setActiveBabyId(newBabies[0].id)
       setParentName(parentNameInput)

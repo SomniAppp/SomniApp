@@ -5,8 +5,13 @@
 create table if not exists public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
   is_premium boolean not null default false,
+  parent_name text,
   created_at timestamptz not null default now()
 );
+
+-- Si la tabla profiles ya existía sin esta columna (proyectos creados antes
+-- de este cambio), esta línea la agrega sin afectar los datos existentes.
+alter table public.profiles add column if not exists parent_name text;
 
 alter table public.profiles enable row level security;
 
